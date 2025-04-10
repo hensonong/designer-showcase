@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设计师个人作品集</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f5f5;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 头图 */
+       .hero {
+            position: relative;
+            height: 400px;
+            background-image: url('作品 (0).png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+       .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+       .hero h1 {
+            font-size: 60px; /* 增大字体大小 */
+            font-weight: bold;
+            z-index: 1;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* 添加文字阴影效果 */
+        }
+
+        /* 导航栏 */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #f0f0f0;
+            color: #007BFF;
+        }
+
+        /* 作品分类展示区 */
+       .portfolio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 自适应排列作品卡片 */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+       .portfolio-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+       .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+       .portfolio-card img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            cursor: zoom-in;
+            transition: all 0.3s;
+        }
+
+       .portfolio-card img:hover {
+            opacity: 0.8;
+        }
+
+       .portfolio-card h3 {
+            padding: 10px;
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* 联系表单 */
+       .contact-form {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+       .contact-form h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+       .contact-form input,
+       .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+       .contact-form input:focus,
+       .contact-form textarea:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+       .contact-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+       .contact-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 社交媒体链接 */
+       .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+       .social-media a {
+            color: #333;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+       .social-media a:hover {
+            color: #007BFF;
+        }
+
+        /* 模态框 */
+       .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+       .modal-content {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+       .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+       .prev,
+       .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            padding: 16px;
+            user-select: none;
+        }
+
+       .prev {
+            left: 20px;
+        }
+
+       .next {
+            right: 20px;
+        }
+
+       .portfolio[data-category] {
+            display: none;
+        }
+
+       .portfolio[data-category="品牌"] {
+            display: grid;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头图 -->
+    <div class="hero">
+        <h1>AIblender虚拟视界</h1>
+    </div>
+    <!-- 导航栏 -->
+    <nav>
+        <a href="#" data-category="品牌">品牌</a>
+        <a href="#" data-category="海报">海报</a>
+        <a href="#" data-category="UI">UI</a>
+    </nav>
+    <!-- 作品分类展示区 -->
+    <div class="portfolio" data-category="品牌">
+        <div class="portfolio-card">
+            <img src="作品 (1).png"
+                alt="作品1" data-src="作品 (1).png" data-index="0">
+            <h3>作品1</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (2).png"
+                alt="作品2" data-src="作品 (2).png" data-index="1">
+            <h3>作品2</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (3).png"
+                alt="作品3" data-src="作品 (3).png" data-index="2">
+            <h3>作品3</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (4).png"
+                alt="作品4" data-src="作品 (4).png" data-index="3">
+            <h3>作品4</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (5).png"
+                alt="作品5" data-src="作品 (5).png" data-index="4">
+            <h3>作品5</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (6).png"
+                alt="作品6" data-src="作品 (6).png" data-index="5">
+            <h3>作品6</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (7).png"
+                alt="作品7" data-src="作品 (7).png" data-index="6">
+            <h3>作品7</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (8).png"
+                alt="作品8" data-src="作品 (8).png" data-index="7">
+            <h3>作品8</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (9).png"
+                alt="作品9" data-src="作品 (9).png" data-index="8">
+            <h3>作品9</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (10).png"
+                alt="作品10" data-src="作品 (10).png" data-index="9">
+            <h3>作品10</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (11).png"
+                alt="作品11" data-src="作品 (11).png" data-index="10">
+            <h3>作品11</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="作品 (12).png"
+                alt="作品12" data-src="作品 (12).png" data-index="11">
+            <h3>作品12</h3>
+        </div>
+    </div>
+    <div class="portfolio" data-category="海报">
+        <div class="portfolio-card">
+            <img src="海报 (1).png"
+                alt="海报1" data-src="海报 (1).png" data-index="0">
+            <h3>海报1</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (2).png"
+                alt="海报2" data-src="海报 (2).png" data-index="1">
+            <h3>海报2</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (3).png"
+                alt="海报3" data-src="海报 (3).png" data-index="2">
+            <h3>海报3</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (4).png"
+                alt="海报4" data-src="海报 (4).png" data-index="3">
+            <h3>海报4</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (5).png"
+                alt="海报5" data-src="海报 (5).png" data-index="4">
+            <h3>海报5</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (6).png"
+                alt="海报6" data-src="海报 (6).png" data-index="5">
+            <h3>海报6</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (7).png"
+                alt="海报7" data-src="海报 (7).png" data-index="6">
+            <h3>海报7</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (8).png"
+                alt="海报8" data-src="海报 (8).png" data-index="7">
+            <h3>海报8</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (9).png"
+                alt="海报9" data-src="海报 (9).png" data-index="8">
+            <h3>海报9</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (10).png"
+                alt="海报10" data-src="海报 (10).png" data-index="9">
+            <h3>海报10</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (11).png"
+                alt="海报11" data-src="海报 (11).png" data-index="10">
+            <h3>海报11</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="海报 (12).png"
+                alt="海报12" data-src="海报 (12).png" data-index="11">
+            <h3>海报12</h3>
+        </div>
+    </div>
+    <div class="portfolio" data-category="UI">
+        <div class="portfolio-card">
+            <img src="UI (1).png"
+                alt="UI1" data-src="UI (1).png" data-index="0">
+            <h3>UI1</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (2).png"
+                alt="UI2" data-src="UI (2).png" data-index="1">
+            <h3>UI2</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (3).png"
+                alt="UI3" data-src="UI (3).png" data-index="2">
+            <h3>UI3</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (4).png"
+                alt="UI4" data-src="UI (4).png" data-index="3">
+            <h3>UI4</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (5).png"
+                alt="UI5" data-src="UI (5).png" data-index="4">
+            <h3>UI5</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (6).png"
+                alt="UI6" data-src="UI (6).png" data-index="5">
+            <h3>UI6</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (7).png"
+                alt="UI7" data-src="UI (7).png" data-index="6">
+            <h3>UI7</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (8).png"
+                alt="UI8" data-src="UI (8).png" data-index="7">
+            <h3>UI8</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (9).png"
+                alt="UI9" data-src="UI (9).png" data-index="8">
+            <h3>UI9</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (10).png"
+                alt="UI10" data-src="UI (10).png" data-index="9">
+            <h3>UI10</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (11).png"
+                alt="UI11" data-src="UI (11).png" data-index="10">
+            <h3>UI11</h3>
+        </div>
+        <div class="portfolio-card">
+            <img src="UI (12).png"
+                alt="UI12" data-src="UI (12).png" data-index="11">
+            <h3>UI12</h3>
+        </div>
+    </div>
+    <!-- 联系表单 -->
+    <div class="contact-form">
+        <h2>联系我们</h2>
+        <form>
+            <input type="text" placeholder="姓名">
+            <input type="email" placeholder="邮箱">
+            <textarea placeholder="需求描述"></textarea>
+            <button type="submit">提交</button>
+        </form>
+    </div>
+    <!-- 社交媒体链接 -->
+    <div class="social-media">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <!-- 模态框 -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <span class="prev" onclick="plusSlides(-1)">&#10094;</span>
+        <span class="next" onclick="plusSlides(1)">&#10095;</span>
+    </div>
+    <script>
+        // 获取模态框
+        var modal = document.getElementById("myModal");
+
+        // 获取模态框中的图像
+        var modalImg = document.getElementById("img01");
+
+        // 获取关闭按钮
+        var span = document.getElementsByClassName("close")[0];
+
+        // 获取所有可点击的图像
+        var images = document.querySelectorAll('.portfolio-card img');
+        var currentIndex = 0;
+
+        images.forEach(function (image) {
+            image.onclick = function () {
+                modal.style.display = "flex";
+                modalImg.src = this.dataset.src;
+                currentIndex = parseInt(this.dataset.index);
+            }
+        });
+
+        // 当用户点击关闭按钮时，关闭模态框
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // 当用户点击模态框外部时，关闭模态框
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // 确保页面加载时模态框隐藏
+        window.onload = function () {
+            modal.style.display = "none";
+        };
+
+        function plusSlides(n) {
+            showSlides(currentIndex += n);
+        }
+
+        function showSlides(n) {
+            var currentCategory = document.querySelector('.portfolio[data-category]:not([style*="display: none"])');
+            var categoryImages = currentCategory.querySelectorAll('img');
+            if (n > categoryImages.length - 1) {
+                currentIndex = 0;
+            }
+            if (n < 0) {
+                currentIndex = categoryImages.length - 1;
+            }
+            modalImg.src = categoryImages[currentIndex].dataset.src;
+        }
+
+        // 导航按钮点击事件
+        var navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var category = this.dataset.category;
+                var portfolios = document.querySelectorAll('.portfolio');
+                portfolios.forEach(function (portfolio) {
+                    if (portfolio.dataset.category === category) {
+                        portfolio.style.display = 'grid';
+                    } else {
+                        portfolio.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+    
